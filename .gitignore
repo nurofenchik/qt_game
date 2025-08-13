@@ -1,0 +1,24 @@
+# Файлы сборки и бинарники
+build/
+*.o
+*.obj
+*.so
+*.dll
+*.exe
+*.a
+*.lib
+*.app
+
+# Настройки Qt Creator
+*.user
+*.user.*
+*.pro.user
+*.pro.user.*
+*.creator.user
+
+# Временные и лог-файлы
+*.log
+*.tmp
+*.swp
+*.DS_Store
+
