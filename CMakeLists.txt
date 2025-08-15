@@ -19,8 +19,9 @@ set(PROJECT_SOURCES
         mainwindow.ui
         gamewindow.cpp
         gamewindow.h
-
-)
+        gameoverwindow.h
+        gameoverwindow.cpp
+    )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(test

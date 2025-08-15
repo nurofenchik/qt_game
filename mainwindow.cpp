@@ -10,6 +10,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QPalette pal = this->palette();
+    pal.setBrush(QPalette::Window, QBrush(QPixmap(":/images/background.png")));
+    this->setPalette(pal);
+    this->setAutoFillBackground(true);
 }
 
 MainWindow::~MainWindow()
@@ -19,7 +23,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    gamewindow* wnd = new gamewindow();
-    wnd->showFullScreen();
+    this->hide();
+    wnd = std::make_unique<gamewindow>();
+    wnd->show();
+    connect( wnd.get() , &gamewindow::gameover , this , &MainWindow::show_window);
 }
 
+void MainWindow::show_window()
+{
+    this->show();
+}

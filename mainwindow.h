@@ -2,7 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "gamewindow.h"
+#include <memory>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -20,8 +21,10 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+    void show_window();
 
 private:
     Ui::MainWindow *ui;
+    std::unique_ptr<gamewindow> wnd;
 };
 #endif // MAINWINDOW_H
