@@ -20,12 +20,14 @@ signals:
     void buttonClicked();
     void start_timer();
     void gameover();
+    void window_closed();
 private slots:
     void on_button_clicked();
     void on_button_firsttime_clicked();
     void movebutton();
     void addscore();
-    void show_score();
+protected:
+    void closeEvent(QCloseEvent *event) override;
 public:
     explicit gamewindow(QWidget* parent = nullptr);
 };

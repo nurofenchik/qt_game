@@ -5,18 +5,20 @@
 #include <QMessageBox>
 #include <QDialog>
 #include "mainwindow.h"
+#include <QCloseEvent>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 gamewindow::gamewindow(QWidget* parent ) : QWidget(parent)
 {
     this->setWindowTitle("Click Game");
     timer = new QTimer(this);
     timer_label = new QLabel("Time : 30" , this);
-    timer_label->move(250,10);
-    score_label = new QLabel("Score: 0", this);
-    score_label->move(10, 10);
-    score_label->resize(100,10);
-    score_label->show();
+    QHBoxLayout* timer_layout = new QHBoxLayout(this);
+    timer_layout->addWidget(timer_label);
+    timer_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     button = new QPushButton("Click me" , this);
     button->resize(100 , 50);
+    button->setCursor(Qt::OpenHandCursor);
     movebutton();
     connect(timer , &QTimer::timeout , this ,  [&](){
         timeLeft--;
@@ -37,7 +39,6 @@ gamewindow::gamewindow(QWidget* parent ) : QWidget(parent)
     connect(button, &QPushButton::clicked, this, &gamewindow::on_button_clicked);
     connect( this , &gamewindow::start_timer , this , &gamewindow::on_button_firsttime_clicked);
     connect( this , &gamewindow::buttonClicked , this , &gamewindow::addscore);
-    connect(button , &QPushButton::clicked , this , &gamewindow::show_score);
 }
 
 void gamewindow::on_button_clicked()
@@ -61,12 +62,21 @@ void gamewindow::addscore()
 {
     score++;
 }
-void gamewindow::show_score()
-{
-    score_label->setText("Score : "+ QString::number(score));
-}
 
 void gamewindow::on_button_firsttime_clicked()
 {
-    timer->start(100);
+    timer->start(1000);
+}
+
+
+void gamewindow::closeEvent(QCloseEvent *event)
+{
+    if( timer->isActive() )
+    {
+        timer->stop();
+    }
+    timer->disconnect();
+    button->disconnect();
+    emit window_closed();
+    event->accept();
 }

@@ -12,16 +12,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+# Собираем исходники, заголовки и формы
+file(GLOB_RECURSE SOURCES "src/source/*.cpp")
+file(GLOB_RECURSE HEADERS "src/headers/*.h")
+file(GLOB_RECURSE FORMS "src/forms/*.ui")
+set(CMAKE_AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/src/forms")
+
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-        gamewindow.cpp
-        gamewindow.h
-        gameoverwindow.h
-        gameoverwindow.cpp
-    )
+    ${SOURCES}
+    ${HEADERS}
+    ${FORMS}
+)
+
+
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(test
@@ -47,6 +50,12 @@ else()
 endif()
 
 target_link_libraries(test PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_include_directories(test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/headers
+)
+qt6_add_resources(RESOURCES resources.qrc)
+target_sources(test PRIVATE ${RESOURCES})
+
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
